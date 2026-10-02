@@ -100,7 +100,11 @@ cp -r agents ~/agent-workforce-project/agents   # workspace paths used in the co
 
 `OpenClaw` `Python` `FastAPI` `Docker Compose` `GCP` `Mem0` `Qdrant` `Neo4j` `PostgreSQL` `OpenRouter` `Telegram` `Notion API` `GitHub API` `PromptFoo`
 
+## License
+
+MIT, see [LICENSE](LICENSE). Third-party parts keep their own licenses, listed below.
+
 ## Credits
 
-- `memory-stack/` is based on the [Mem0](https://github.com/mem0ai/mem0) REST API server (Apache-2.0).
-- `openclaw/skills/adapted/` starts from agent definitions in [agency-agents](https://github.com/msitarzewski/agency-agents) (MIT).
+- `memory-stack/` is based on the [Mem0](https://github.com/mem0ai/mem0) REST API server (Apache-2.0, see [`memory-stack/LICENSE`](memory-stack/LICENSE)).
+- `openclaw/skills/adapted/` starts from agent definitions in [agency-agents](https://github.com/msitarzewski/agency-agents) (MIT, see [`openclaw/skills/adapted/LICENSE`](openclaw/skills/adapted/LICENSE)).
