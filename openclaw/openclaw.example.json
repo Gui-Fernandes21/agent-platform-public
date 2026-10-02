@@ -1,0 +1,311 @@
+{
+  "env": {
+    "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}",
+    "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+  },
+  "auth": {
+    "profiles": {
+      "openrouter:default": {
+        "provider": "openrouter",
+        "mode": "api_key"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openrouter/anthropic/claude-sonnet-4-6"
+      },
+      "models": {
+        "openrouter/anthropic/claude-haiku-4-5": {
+          "alias": "Haiku (fast)"
+        },
+        "openrouter/anthropic/claude-sonnet-4-6": {
+          "alias": "Sonnet (default)"
+        },
+        "openrouter/anthropic/claude-opus-4": {
+          "alias": "Opus (complex)"
+        },
+        "openrouter/z-ai/glm-5-turbo": {
+          "alias": "GLM-5 Turbo"
+        },
+        "openrouter/z-ai/glm-4.7-flash": {
+          "alias": "GLM-4.7 Flash"
+        }
+      },
+      "workspace": "~/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      }
+    },
+    "list": [
+      {
+        "id": "main"
+      },
+      {
+        "id": "backend-developer",
+        "name": "backend-developer",
+        "workspace": "~/agent-workforce-project/agents/backend-developer",
+        "agentDir": "~/.openclaw/agents/backend-developer/agent",
+        "model": "openrouter/z-ai/glm-5-turbo"
+      },
+      {
+        "id": "frontend-developer",
+        "name": "frontend-developer",
+        "workspace": "~/agent-workforce-project/agents/frontend-developer",
+        "agentDir": "~/.openclaw/agents/frontend-developer/agent",
+        "model": "openrouter/z-ai/glm-5-turbo"
+      },
+      {
+        "id": "pm-orchestrator",
+        "name": "pm-orchestrator",
+        "workspace": "~/agent-workforce-project/agents/pm-orchestrator",
+        "agentDir": "~/.openclaw/agents/pm-orchestrator/agent",
+        "model": "openrouter/xiaomi/mimo-v2-pro"
+      },
+      {
+        "id": "database-engineer",
+        "name": "database-engineer",
+        "workspace": "~/agent-workforce-project/agents/database-engineer",
+        "agentDir": "~/.openclaw/agents/database-engineer/agent",
+        "model": "openrouter/z-ai/glm-4.7-flash"
+      },
+      {
+        "id": "qa-tester",
+        "name": "qa-tester",
+        "workspace": "~/agent-workforce-project/agents/qa-tester",
+        "agentDir": "~/.openclaw/agents/qa-tester/agent",
+        "model": "openrouter/anthropic/claude-haiku-4-5"
+      },
+      {
+        "id": "code-reviewer",
+        "name": "code-reviewer",
+        "workspace": "~/agent-workforce-project/agents/code-reviewer",
+        "agentDir": "~/.openclaw/agents/code-reviewer/agent"
+      },
+      {
+        "id": "devops-engineer",
+        "name": "devops-engineer",
+        "workspace": "~/agent-workforce-project/agents/devops-engineer",
+        "agentDir": "~/.openclaw/agents/devops-engineer/agent",
+        "model": "openrouter/z-ai/glm-4.7-flash"
+      },
+      {
+        "id": "skill-auditor",
+        "name": "skill-auditor",
+        "workspace": "~/agent-workforce-project/agents/skill-auditor",
+        "agentDir": "~/.openclaw/agents/skill-auditor/agent",
+        "model": "openrouter/anthropic/claude-haiku-4-5"
+      },
+      {
+        "id": "ui-designer",
+        "name": "ui-designer",
+        "workspace": "~/agent-workforce-project/agents/ui-designer",
+        "agentDir": "~/.openclaw/agents/ui-designer/agent",
+        "model": "openrouter/z-ai/glm-5-turbo"
+      }
+    ]
+  },
+  "tools": {
+    "profile": "coding"
+  },
+  "bindings": [
+    {
+      "type": "route",
+      "agentId": "pm-orchestrator",
+      "match": {
+        "channel": "telegram",
+        "accountId": "workforce"
+      }
+    },
+    {
+      "type": "route",
+      "agentId": "skill-auditor",
+      "match": {
+        "channel": "telegram",
+        "accountId": "workforce"
+      }
+    },
+    {
+      "type": "route",
+      "agentId": "main",
+      "match": {
+        "channel": "telegram",
+        "accountId": "default"
+      }
+    }
+  ],
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "command-logger": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        },
+        "boot-md": {
+          "enabled": true
+        },
+        "bootstrap-extra-files": {
+          "enabled": true,
+          "paths": [
+            "~/.openclaw/workspace/AGENTS.md"
+          ]
+        }
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "allowFrom": [],
+      "groupPolicy": "allowlist",
+      "debounceMs": 0,
+      "accounts": {
+        "default": {
+          "enabled": false,
+          "dmPolicy": "pairing",
+          "groupPolicy": "allowlist",
+          "debounceMs": 0
+        }
+      },
+      "mediaMaxMb": 50
+    },
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "botToken": "${TELEGRAM_BOT_TOKEN}",
+      "allowFrom": [
+        "${TELEGRAM_ALLOWED_USER_ID}"
+      ],
+      "groupPolicy": "allowlist",
+      "streaming": "partial",
+      "mediaMaxMb": 50,
+      "accounts": {
+        "default": {
+          "dmPolicy": "allowlist",
+          "botToken": "${TELEGRAM_BOT_TOKEN}",
+          "allowFrom": [
+            "${TELEGRAM_ALLOWED_USER_ID}"
+          ],
+          "groupPolicy": "allowlist",
+          "streaming": "partial"
+        },
+        "workforce": {
+          "dmPolicy": "pairing",
+          "botToken": "${TELEGRAM_WORKFORCE_BOT_TOKEN}",
+          "groupPolicy": "allowlist",
+          "streaming": "partial"
+        }
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "${OPENCLAW_GATEWAY_TOKEN}"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "http": {
+      "endpoints": {
+        "responses": {
+          "enabled": true
+        }
+      }
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "contacts.add",
+        "calendar.add",
+        "reminders.add",
+        "sms.send"
+      ]
+    }
+  },
+  "plugins": {
+    "allow": [
+      "openclaw-mem0",
+      "telegram",
+      "whatsapp"
+    ],
+    "slots": {
+      "memory": "openclaw-mem0"
+    },
+    "entries": {
+      "telegram": {
+        "enabled": true
+      },
+      "openclaw-mem0": {
+        "enabled": true,
+        "hooks": {
+          "allowPromptInjection": true
+        },
+        "config": {
+          "mode": "open-source",
+          "userId": "${MEM0_USER_ID}",
+          "autoCapture": true,
+          "autoRecall": true,
+          "oss": {
+            "embedder": {
+              "provider": "openai",
+              "config": {
+                "apiKey": "${OPENAI_API_KEY}",
+                "model": "text-embedding-3-small",
+                "embeddingDims": 1536
+              }
+            },
+            "vectorStore": {
+              "provider": "qdrant",
+              "config": {
+                "url": "http://127.0.0.1:6333",
+                "collectionName": "openclaw-mem0",
+                "dimension": 1536
+              }
+            },
+            "llm": {
+              "provider": "openai",
+              "config": {
+                "apiKey": "${OPENAI_API_KEY}",
+                "model": "gpt-4o-mini"
+              }
+            }
+          }
+        }
+      },
+      "memory-core": {
+        "enabled": false
+      },
+      "memory-lancedb": {
+        "enabled": false
+      }
+    },
+    "installs": {
+      "openclaw-mem0": {
+        "source": "npm",
+        "spec": "@mem0/openclaw-mem0",
+        "version": "0.3.3"
+      }
+    }
+  }
+}

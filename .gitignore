@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+openclaw.json
+config.yaml
+
+# Runtime data
+*.db
+*.sqlite
+history/
+sessions/
+logs/
+*.log
+
+# Dependencies / build
+node_modules/
+__pycache__/
+.venv/
+dist/

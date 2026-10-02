@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "name": "Morning briefing",
+      "enabled": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 7 * * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Generate today's briefing: give me 5 innovative ideas of commercial projects using cutting edge technology coming from recent research papers on computer science, inform me about today's weather",
+        "model": "openrouter/anthropic/claude-sonnet-4"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "telegram:${TELEGRAM_ALLOWED_USER_ID}"
+      }
+    },
+    {
+      "agentId": "pm-orchestrator",
+      "name": "daily-summary",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 13 * * *",
+        "tz": "America/New_York"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the daily summary. Check Notion for active tasks, blocked items, and pending gates. Send the summary to me via Telegram."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram:workforce"
+      }
+    },
+    {
+      "agentId": "skill-auditor",
+      "sessionKey": "agent:skill-auditor:main",
+      "name": "Weekly Skill Audit",
+      "enabled": true,
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 0",
+        "tz": "UTC"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the skill-audit workflow: read the feedback log, identify patterns, generate improvement actions, apply changes to agent files, archive processed feedback, and write the audit report."
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "telegram",
+        "to": "telegram:${TELEGRAM_ALLOWED_USER_ID}"
+      }
+    }
+  ]
+}
